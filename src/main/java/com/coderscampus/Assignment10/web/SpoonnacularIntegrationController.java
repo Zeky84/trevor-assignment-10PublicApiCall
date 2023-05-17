@@ -39,9 +39,6 @@ public class SpoonnacularIntegrationController {
 
     private static URI getUri(String numCalories, String diet, String exclusions, String weekOrDay,
                               String spoonacularUrlBase, String spoonacularUrlsMealplan) {
-
-
-
         return UriComponentsBuilder.fromHttpUrl(spoonacularUrlBase + spoonacularUrlsMealplan)
                 .queryParam("timeFrame", weekOrDay)
                 .queryParam("targetCalories", numCalories)
