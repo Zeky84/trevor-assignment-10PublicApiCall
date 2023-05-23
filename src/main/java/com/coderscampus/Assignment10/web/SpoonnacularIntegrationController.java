@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 public class SpoonnacularIntegrationController {
@@ -19,9 +20,6 @@ public class SpoonnacularIntegrationController {
 
     @Value("${spoonacular.urls.mealplan}")
     private String spoonacularUrlsMealplan;
-
-    public SpoonnacularIntegrationController() {
-    }
 
     @GetMapping("mealplanner/day")
     public ResponseEntity<DayResponse> getWeekMeals(String numCalories, String diet, String exclusions) {
@@ -39,6 +37,14 @@ public class SpoonnacularIntegrationController {
 
     private static URI getUri(String numCalories, String diet, String exclusions, String weekOrDay,
                               String spoonacularUrlBase, String spoonacularUrlsMealplan) {
+        Optional<String> numCalories1 = Optional.ofNullable(numCalories);
+        if(numCalories1.isEmpty()){
+            return UriComponentsBuilder.fromHttpUrl(spoonacularUrlBase + spoonacularUrlsMealplan)
+                    .queryParam("timeFrame", weekOrDay)
+                    .queryParam("apiKey", "15cacd376b9b4449b40e8bbf61f9385a")
+                    .build()
+                    .toUri();
+        }
         return UriComponentsBuilder.fromHttpUrl(spoonacularUrlBase + spoonacularUrlsMealplan)
                 .queryParam("timeFrame", weekOrDay)
                 .queryParam("targetCalories", numCalories)
